@@ -21,7 +21,7 @@ export const SimpleFlashcard: React.FC<SimpleFlashcardProps> = ({
             className="bg-light text-dark card-body clickable-card"
             onClick={() => setShowAnswer(false)}
           >
-            <p>Réponse :</p>
+            <p>Response :</p>
             <p>{data.answer}</p>
           </div>
         </div>
