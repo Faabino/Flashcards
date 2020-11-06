@@ -1,16 +1,13 @@
 import React from "react";
 import data from "../data/data.json";
+import { shuffleQuestions } from "../utils/shuffleQuestions";
 
-type SimpleFlashcardProps = {
-  question?: string;
-  answer?: string;
-};
+shuffleQuestions(data.inputQuestions);
+let index = 0;
 
-export const SimpleFlashcard: React.FC<SimpleFlashcardProps> = ({
-  question,
-  answer,
-}) => {
+export const SimpleFlashcard = () => {
   const [showAnswer, setShowAnswer] = React.useState(false);
+  const [questions, setQuestions] = React.useState(data.inputQuestions);
 
   return (
     <>
@@ -19,10 +16,17 @@ export const SimpleFlashcard: React.FC<SimpleFlashcardProps> = ({
           <div
             id="simpleCard"
             className="bg-light text-dark card-body clickable-card"
-            onClick={() => setShowAnswer(false)}
+            onClick={() => {
+              setShowAnswer(false);
+              if (index === questions.length - 1) {
+                index = 0;
+              } else {
+                ++index;
+              }
+            }}
           >
             <p>Response :</p>
-            <p>{data.answer}</p>
+            <p>{data.mentalQuestions[index].answer}</p>
           </div>
         </div>
       ) : (
@@ -30,10 +34,12 @@ export const SimpleFlashcard: React.FC<SimpleFlashcardProps> = ({
           <div
             id="simpleCard"
             className="bg-dark card-body clickable-card"
-            onClick={() => setShowAnswer(true)}
+            onClick={() => {
+              setShowAnswer(true);
+            }}
           >
             <p>Question :</p>
-            <p>{data.question}</p>
+            <p>{data.mentalQuestions[index].question}</p>
           </div>
         </div>
       )}

@@ -1,16 +1,16 @@
 import React from "react";
 import data from "../data/data.json";
+import { shuffleQuestions } from "../utils/shuffleQuestions";
 
-type InputFlashcardProps = {
-  question?: string;
-  answer?: string;
-};
+shuffleQuestions(data.inputQuestions);
+let index = 0;
 
-export const InputFlashcard: React.FC<InputFlashcardProps> = (): JSX.Element => {
+export const InputFlashcard = (): JSX.Element => {
   const [value, setValue] = React.useState("");
   const [rightAnswer, setRightAnswer] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
-  const answer = data.answer;
+  const [questions, setQuestions] = React.useState(data.inputQuestions);
+  let answer = questions[index].answer;
 
   const checkInput = (event: any) => {
     setValue(event.target.value);
@@ -27,7 +27,7 @@ export const InputFlashcard: React.FC<InputFlashcardProps> = (): JSX.Element => 
       <>
         <div className="card">
           <div className="bg-dark card-body">
-            <p>{data.question}</p>
+            <p>{questions[index].question}</p>
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -46,17 +46,37 @@ export const InputFlashcard: React.FC<InputFlashcardProps> = (): JSX.Element => 
     );
   } else if (rightAnswer) {
     return (
-      <div className="card" onClick={() => setSubmitted(false)}>
+      <div
+        className="card"
+        onClick={() => {
+          setSubmitted(false);
+          if (index === questions.length - 1) {
+            index = 0;
+          } else {
+            ++index;
+          }
+        }}
+      >
         <div className="bg-success card-body clickable-card">
-          Good job! {value} is the correct answer!
+          Good job! {answer} is the correct answer!
         </div>
       </div>
     );
   } else {
     return (
-      <div className="card" onClick={() => setSubmitted(false)}>
+      <div
+        className="card"
+        onClick={() => {
+          setSubmitted(false);
+          if (index === questions.length - 1) {
+            index = 0;
+          } else {
+            ++index;
+          }
+        }}
+      >
         <div className="bg-danger card-body clickable-card">
-          {value} is not the correct answer! :(
+          {answer} was the correct answer! :(
         </div>
       </div>
     );
